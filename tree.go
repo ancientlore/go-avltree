@@ -26,93 +26,91 @@ See also:	Robert L. Kruse, Data Structures and Program Design, 2nd Ed., Prentice
 package avltree
 
 import (
-	"math";
+	"math"
 )
 
 // tree options
 const (
-	AllowDuplicates = 1;
+	AllowDuplicates = 1
 )
 
 // Definition of a comparison function
-type CompareFunc func (v1 Any, v2 Any) int;
+type CompareFunc func(v1 Any, v2 Any) int
 
 // Iterate function
-type IterateFunc func (v Any);
+type IterateFunc func(v Any)
 
 // Tree object
 type Tree struct {
 	// root of the tree
-	root *treeNode;
-	
+	root *treeNode
+
 	// compare function
-	compare CompareFunc;
+	compare CompareFunc
 
 	// options controlling behavior
-	treeFlags byte;
+	treeFlags byte
 }
 
 // Initialize or reset a Tree
 func (t *Tree) Init(c CompareFunc, flags byte) *Tree {
-	t.compare = c;
-	t.root = nil;
-	t.treeFlags = flags;
-	return t;
+	t.compare = c
+	t.root = nil
+	t.treeFlags = flags
+	return t
 }
 
 // Return an initialized tree
-func New(c CompareFunc, flags byte) *Tree {
-	return new(Tree).Init(c, flags);
-}
+func New(c CompareFunc, flags byte) *Tree { return new(Tree).Init(c, flags) }
 
 // Clear removes all elements from the tree, keeping the
 // current options and compare function
-func (t *Tree) Clear() {
-	t.Init(t.compare, t.treeFlags);
-}
+func (t *Tree) Clear() { t.Init(t.compare, t.treeFlags) }
 
 // calcHeightData contains information needed to compute the
 // height of the tree
 type calcHeightData struct {
-	currentHeight int;
-	maxHeight int;
+	currentHeight int
+	maxHeight     int
 }
 
 // calcHeight executes recursively to determine the height
 // (number of levels) in the tree.
 func (d *calcHeightData) calcHeight(node *treeNode) {
-	d.currentHeight++;
+	d.currentHeight++
 
 	if node.left != nil {
-		d.calcHeight(node.left);
+		d.calcHeight(node.left)
 	}
 
 	if node.right != nil {
-		d.calcHeight(node.right);
+		d.calcHeight(node.right)
 	}
 
 	if d.currentHeight > d.maxHeight {
-		d.maxHeight = d.currentHeight;
+		d.maxHeight = d.currentHeight
 	}
-	d.currentHeight--;
+	d.currentHeight--
 }
 
 // Height returns the "height" of the tree, meaning the
 // number of levels.
 func (t *Tree) Height() int {
-	d := &calcHeightData{0,0};
+	d := &calcHeightData{0, 0}
 
 	if t.root != nil {
-		d.calcHeight(t.root);
+		d.calcHeight(t.root)
 	}
-	
-	return d.maxHeight;
+
+	return d.maxHeight
 }
 
 // Len returns the number of elements in the tree
 func (t *Tree) Len() int {
-	if t.root != nil { return t.root.size; }
-	return 0;
+	if t.root != nil {
+		return t.root.size
+	}
+	return 0
 }
 
 // Cap returns the capacity of the tree; that is, the
@@ -121,16 +119,16 @@ func (t *Tree) Len() int {
 // of how skewed the tree is.
 func (t *Tree) Cap() int {
 
-	var count, i int;
-	count = 0;
+	var count, i int
+	count = 0
 
-	maxHeight := t.Height();
+	maxHeight := t.Height()
 
 	for i = 0; i < maxHeight; i++ {
-		count += int(math.Pow(2, float64(i)));
+		count += int(math.Pow(2, float64(i)))
 	}
 
-	return count;
+	return count
 }
 
 // indexer recursively scans the tree to find the node
@@ -138,30 +136,32 @@ func (t *Tree) Cap() int {
 func indexer(node *treeNode, index int) *treeNode {
 
 	if index < node.leftSize() {
-		return indexer(node.left, index);
+		return indexer(node.left, index)
 	} else if index == node.leftSize() {
-		return node;
+		return node
 	} else if node.right != nil {
-		return indexer(node.right, index - (node.leftSize() + 1));
+		return indexer(node.right, index-(node.leftSize()+1))
 	}
-	return nil;
+	return nil
 }
 
 // At returns the value at the given index
 func (t *Tree) At(index int) Any {
 
 	if t.root != nil && index < t.root.size && index >= 0 {
-		node := indexer(t.root, index);
-    	if (node != nil) { return node.value; }
+		node := indexer(t.root, index)
+		if node != nil {
+			return node.value
+		}
 	}
 
-  return nil;
+	return nil
 }
 
 // findData is used when searching the tree
 type findData struct {
-	lookingFor Any;
-	compare CompareFunc;
+	lookingFor Any
+	compare    CompareFunc
 }
 
 // finder recursively scans the tree to find the node with the
@@ -169,34 +169,34 @@ type findData struct {
 func (d *findData) finder(node *treeNode) *treeNode {
 
 	if node != nil {
-		code := d.compare(d.lookingFor, node.value);
+		code := d.compare(d.lookingFor, node.value)
 		if code < 0 {
-			return d.finder(node.left);
+			return d.finder(node.left)
 		} else if code > 0 {
-			return d.finder(node.right);
+			return d.finder(node.right)
 		}
-		return node;
+		return node
 	}
-	return nil;
+	return nil
 }
 
 // Find returns the element where the comparison function matches
 // the node's value and the given key value
 func (t *Tree) Find(key Any) Any {
-	if key != nil  &&  t.root != nil {
-		d := &findData{key, t.compare};
-		node := d.finder(t.root);
+	if key != nil && t.root != nil {
+		d := &findData{key, t.compare}
+		node := d.finder(t.root)
 		if node != nil {
-			return node.value;
+			return node.value
 		}
 	}
 
-	return nil;
+	return nil
 }
 
 // iterData is used when iterating the tree
 type iterData struct {
-	iter IterateFunc;
+	iter IterateFunc
 }
 
 // iterate recursively traverses the tree and executes
@@ -204,13 +204,13 @@ type iterData struct {
 func (d *iterData) iterate(node *treeNode) {
 
 	if node.left != nil {
-		d.iterate(node.left);
+		d.iterate(node.left)
 	}
-	
-	d.iter(node.value);
+
+	d.iter(node.value)
 
 	if node.right != nil {
-		d.iterate(node.right);
+		d.iterate(node.right)
 	}
 }
 
@@ -218,32 +218,34 @@ func (d *iterData) iterate(node *treeNode) {
 // The function should not change the structure of the tree underfoot.
 func (t *Tree) Do(f IterateFunc) {
 
-	if f != nil  &&  t.root != nil {
-		d := &iterData{f};
-		d.iterate(t.root);
+	if f != nil && t.root != nil {
+		d := &iterData{f}
+		d.iterate(t.root)
 	}
 }
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
 func (t *Tree) chanIterate(c chan<- Any) {
-	t.Do(func (v Any) { c <- v });
-	close(c);
+	t.Do(func(v Any) { c <- v })
+	close(c)
 }
 
 // Iter returns a channel you can read through to fetch all the items
 func (t *Tree) Iter() <-chan Any {
-	c := make(chan Any);
-	go t.chanIterate(c);
-	return c;
+	c := make(chan Any)
+	go t.chanIterate(c)
+	return c
 }
 
 // Data returns all the elements as a slice.
 func (t *Tree) Data() []Any {
-	arr := make([]Any, t.Len());
-	var i int;
-	i = 0;
-	t.Do(func (v Any) { arr[i] = v; i++; });
-	return arr;
+	arr := make([]Any, t.Len())
+	var i int
+	i = 0
+	t.Do(func(v Any) {
+		arr[i] = v
+		i++
+	})
+	return arr
 }
-
