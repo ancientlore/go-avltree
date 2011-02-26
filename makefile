@@ -1,6 +1,6 @@
 include $(GOROOT)/src/Make.inc
 
-TARG=container/avltree
+TARG=go-avltree.googlecode.com/svn/trunk
 GOFILES=\
 	node.go\
 	tree.go\
