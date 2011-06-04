@@ -2,14 +2,14 @@ package avltree
 
 // addData holds information used when adding nodes
 type addData struct {
-	lookingFor Any
-	duplicate  Any
+	lookingFor interface{}
+	duplicate  interface{}
 	tree       *Tree
 }
 
-func (d *addData) add(node **treeNode, taller *bool) Any {
+func (d *addData) add(node **treeNode, taller *bool) interface{} {
 	*taller = false // default: not taller
-	var ptr Any
+	var ptr interface{}
 	ptr = nil
 
 	if *node == nil {
@@ -75,7 +75,7 @@ func (d *addData) add(node **treeNode, taller *bool) Any {
 // (or duplicate) item, and a flag indicating whether the item is the
 // duplicate that was found. A duplicate will never be returned if the
 // tree's AllowDuplicates flag is set.
-func (t *Tree) Add(o Any) (val Any, isDupe bool) {
+func (t *Tree) Add(o interface{}) (val interface{}, isDupe bool) {
 	d := &addData{o, nil, t}
 	taller := false
 	isDupe = false

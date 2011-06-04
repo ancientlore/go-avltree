@@ -7,16 +7,13 @@ const (
 	rightHigh
 )
 
-// Any object
-type Any interface{}
-
 // treeNode is a node in the tree
 type treeNode struct {
 	// left and right nodes
 	left, right *treeNode
 
 	// The contents of this node
-	value Any
+	value interface{}
 
 	// The balance factor of this node
 	bal byte
@@ -26,7 +23,7 @@ type treeNode struct {
 }
 
 // Init initializes a node with the given value
-func (n *treeNode) init(val Any) *treeNode {
+func (n *treeNode) init(val interface{}) *treeNode {
 	n.left = nil
 	n.right = nil
 	n.bal = equal
@@ -36,7 +33,7 @@ func (n *treeNode) init(val Any) *treeNode {
 }
 
 // newNode returns an initialized treeNode
-func newNode(val Any) *treeNode { return new(treeNode).init(val) }
+func newNode(val interface{}) *treeNode { return new(treeNode).init(val) }
 
 // leftSize returns the size of the left subtree
 // of the node

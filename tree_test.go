@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func compareInt(a Any, b Any) int {
+func compareInt(a interface{}, b interface{}) int {
 	if a.(int) < b.(int) {
 		return -1
 	} else if a.(int) > b.(int) {
@@ -154,7 +154,7 @@ func TestTree(t *testing.T) {
 	// test Do
 
 	x := 0
-	tree.Do(func(z Any) { x += z.(int) })
+	tree.Do(func(z interface{}) { x += z.(int) })
 
 	if x != 43 {
 		t.Errorf("Do function did not add up values correctly, expected 43: %d\n", x)
@@ -228,7 +228,7 @@ func TestTree(t *testing.T) {
 	prev = -1
 
 	// make sure elements sorted
-	tree.Do(func(elem Any) {
+	tree.Do(func(elem interface{}) {
 		var cur int
 		cur = elem.(int)
 		if prev > cur {

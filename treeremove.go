@@ -1,7 +1,7 @@
 package avltree
 
 type removeData struct {
-	lookingFor Any
+	lookingFor interface{}
 	compare    CompareFunc
 }
 
@@ -143,10 +143,10 @@ func remNode(node *treeNode) *treeNode {
 	return node
 }
 
-func (d *removeData) remove(node **treeNode, shorter *bool) Any {
+func (d *removeData) remove(node **treeNode, shorter *bool) interface{} {
 
 	*shorter = true // default: shorter
-	var ptr Any
+	var ptr interface{}
 	ptr = nil
 
 	code := d.compare(d.lookingFor, (*node).value)
@@ -192,7 +192,7 @@ func (d *removeData) remove(node **treeNode, shorter *bool) Any {
 }
 
 // Remove removes the element matching the given value.
-func (t *Tree) Remove(ptr Any) Any {
+func (t *Tree) Remove(ptr interface{}) interface{} {
 	if ptr != nil && t.root != nil {
 		d := &removeData{ptr, t.compare}
 		var shorter bool
@@ -202,10 +202,10 @@ func (t *Tree) Remove(ptr Any) Any {
 	return nil
 }
 
-func remove(node **treeNode, index int, shorter *bool) Any {
+func remove(node **treeNode, index int, shorter *bool) interface{} {
 
 	*shorter = true // default: shorter
-	var ptr Any
+	var ptr interface{}
 	ptr = nil
 
 	if index < (*node).leftSize() {
@@ -249,7 +249,7 @@ func remove(node **treeNode, index int, shorter *bool) Any {
 }
 
 // Remove removes the element at the given index
-func (t *Tree) RemoveAt(index int) Any {
+func (t *Tree) RemoveAt(index int) interface{} {
 	if t.root != nil && index < t.root.size && index >= 0 {
 		var shorter bool
 		return remove(&(t.root), index, &shorter)

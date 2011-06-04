@@ -35,10 +35,10 @@ const (
 )
 
 // Definition of a comparison function
-type CompareFunc func(v1 Any, v2 Any) int
+type CompareFunc func(v1 interface{}, v2 interface{}) int
 
 // Iterate function
-type IterateFunc func(v Any)
+type IterateFunc func(v interface{})
 
 // Tree object
 type Tree struct {
@@ -146,7 +146,7 @@ func indexer(node *treeNode, index int) *treeNode {
 }
 
 // At returns the value at the given index
-func (t *Tree) At(index int) Any {
+func (t *Tree) At(index int) interface{} {
 
 	if t.root != nil && index < t.root.size && index >= 0 {
 		node := indexer(t.root, index)
@@ -160,7 +160,7 @@ func (t *Tree) At(index int) Any {
 
 // findData is used when searching the tree
 type findData struct {
-	lookingFor Any
+	lookingFor interface{}
 	compare    CompareFunc
 }
 
@@ -182,7 +182,7 @@ func (d *findData) finder(node *treeNode) *treeNode {
 
 // Find returns the element where the comparison function matches
 // the node's value and the given key value
-func (t *Tree) Find(key Any) Any {
+func (t *Tree) Find(key interface{}) interface{} {
 	if key != nil && t.root != nil {
 		d := &findData{key, t.compare}
 		node := d.finder(t.root)
@@ -226,24 +226,24 @@ func (t *Tree) Do(f IterateFunc) {
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
-func (t *Tree) chanIterate(c chan<- Any) {
-	t.Do(func(v Any) { c <- v })
+func (t *Tree) chanIterate(c chan<- interface{}) {
+	t.Do(func(v interface{}) { c <- v })
 	close(c)
 }
 
 // Iter returns a channel you can read through to fetch all the items
-func (t *Tree) Iter() <-chan Any {
-	c := make(chan Any)
+func (t *Tree) Iter() <-chan interface{} {
+	c := make(chan interface{})
 	go t.chanIterate(c)
 	return c
 }
 
 // Data returns all the elements as a slice.
-func (t *Tree) Data() []Any {
-	arr := make([]Any, t.Len())
+func (t *Tree) Data() []interface{} {
+	arr := make([]interface{}, t.Len())
 	var i int
 	i = 0
-	t.Do(func(v Any) {
+	t.Do(func(v interface{}) {
 		arr[i] = v
 		i++
 	})

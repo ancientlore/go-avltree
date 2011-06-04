@@ -9,7 +9,7 @@ type StringTree struct {
 	Tree
 }
 
-func stringCompare(s1 Any, s2 Any) int {
+func stringCompare(s1 interface{}, s2 interface{}) int {
 	if s1.(string) < s2.(string) {
 		return -1
 	} else if s1.(string) > s2.(string) {
@@ -51,7 +51,7 @@ func (t *StringTree) Find(key string) string {
 
 // Do calls function f for each element of the tree, in order.
 // The function should not change the structure of the tree underfoot.
-func (t *StringTree) Do(f StringIterateFunc) { t.Tree.Do(func(v Any) { f(v.(string)) }) }
+func (t *StringTree) Do(f StringIterateFunc) { t.Tree.Do(func(v interface{}) { f(v.(string)) }) }
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
@@ -110,5 +110,5 @@ func (t *StringTree) RemoveAt(index int) string {
 }
 
 func (t *StringTree) Print(w io.Writer, f StringIterateFunc, itemSiz int) {
-	t.Tree.Print(w, func(v Any) { f(v.(string)) }, itemSiz)
+	t.Tree.Print(w, func(v interface{}) { f(v.(string)) }, itemSiz)
 }
