@@ -8,7 +8,8 @@ GOFILES=\
 	treeprint.go\
 	treeremove.go\
 	stringtree.go\
-	objecttree.go
+	objecttree.go\
+	pairtree.go
 
 include $(GOROOT)/src/Make.pkg
 
