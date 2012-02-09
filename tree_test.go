@@ -1,7 +1,7 @@
 package avltree
 
 import (
-	"rand"
+	"math/rand"
 	"testing"
 )
 
@@ -28,9 +28,9 @@ func TestTree(t *testing.T) {
 		t.Errorf("Initialized tree flags should be zero: %v\n", tree.treeFlags)
 	}
 
-	if tree.compare != compareInt {
-		t.Errorf("Initialized tree compare function not correct: %v\n", tree.compare)
-	}
+	//if tree.compare != compareInt {
+	//	t.Errorf("Initialized tree compare function not correct: %v\n", tree.compare)
+	//}
 
 	if tree.Len() != 0 || tree.Cap() != 0 || tree.Height() != 0 {
 		t.Errorf("Initialized tree sizes should all be zero: %d Len, %d Cap, %d Height\n",
@@ -85,9 +85,9 @@ func TestTree(t *testing.T) {
 		t.Errorf("Reinitialized tree flags should be AllowDuplicates: %v\n", tree.treeFlags)
 	}
 
-	if tree.compare != compareInt {
-		t.Errorf("Reinitialized tree compare function not correct: %v\n", tree.compare)
-	}
+	//if tree.compare != compareInt {
+	//	t.Errorf("Reinitialized tree compare function not correct: %v\n", tree.compare)
+	//}
 
 	if tree.Len() != 0 || tree.Cap() != 0 || tree.Height() != 0 {
 		t.Errorf("Initialized tree sizes should all be zero: %d Len, %d Cap, %d Height\n",
@@ -205,9 +205,9 @@ func TestTree(t *testing.T) {
 		t.Errorf("Cleared tree flags should still be AllowDuplicates: %v\n", tree.treeFlags)
 	}
 
-	if tree.compare != compareInt {
-		t.Errorf("Cleared tree compare function not correct: %v\n", tree.compare)
-	}
+	//if tree.compare != compareInt {
+	//	t.Errorf("Cleared tree compare function not correct: %v\n", tree.compare)
+	//}
 
 	if tree.Len() != 0 || tree.Cap() != 0 || tree.Height() != 0 {
 		t.Errorf("Cleared tree sizes should all be zero: %d Len, %d Cap, %d Height\n",
