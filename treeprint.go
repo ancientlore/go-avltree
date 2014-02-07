@@ -1,8 +1,8 @@
 package avltree
 
 import (
-	"io"
 	"fmt"
+	"io"
 )
 
 type printData struct {
