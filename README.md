@@ -23,3 +23,5 @@ To install, you can use:
 	go get github.com/ancientlore/go-avltree
 
 See some sample code at https://gist.github.com/ancientlore/8855122
+
+[![GoDoc](https://godoc.org/github.com/ancientlore/go-avltree?status.png)](https://godoc.org/github.com/ancientlore/go-avltree)
