@@ -1,4 +1,4 @@
-An AVL tree (Adel'son-Vel'skii & Landis) is a binary search tree in which the heights of the left and right subtrees of the root differ by at most one and in which the left and right subtrees are again AVL trees.
+An [AVL tree](http://en.wikipedia.org/wiki/AVL_tree) (Adel'son-Vel'skii & Landis) is a binary search tree in which the heights of the left and right subtrees of the root differ by at most one and in which the left and right subtrees are again AVL trees.
 
 With each node of an AVL tree is associated a balance factor that is Left High, Equal, or Right High according, respectively, as the left subtree has height greater than, equal to, or less than that of the right subtree.
 
