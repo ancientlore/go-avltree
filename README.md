@@ -25,3 +25,4 @@ To install, you can use:
 See some sample code at https://gist.github.com/ancientlore/8855122
 
 [![GoDoc](https://godoc.org/github.com/ancientlore/go-avltree?status.png)](https://godoc.org/github.com/ancientlore/go-avltree)
+[![status](https://sourcegraph.com/api/repos/github.com/ancientlore/go-avltree/.badges/status.png)](https://sourcegraph.com/github.com/ancientlore/go-avltree)
