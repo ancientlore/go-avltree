@@ -144,6 +144,11 @@ func TestTree(t *testing.T) {
 		t.Errorf("Found an item that isn't there: %v\n", v)
 	}
 
+	v = tree.Find(nil)
+	if v != nil {
+		t.Errorf("Found an item that is not there: %v\n", v)
+	}
+
 	// test Data (slice)
 	slice := tree.Data()
 
