@@ -1,3 +1,9 @@
+[![Build Status](https://travis-ci.org/ancientlore/go-avltree.svg?branch=master)](https://travis-ci.org/ancientlore/go-avltree)
+[![Coverage Status](https://coveralls.io/repos/ancientlore/go-avltree/badge.svg)](https://coveralls.io/r/ancientlore/go-avltree)
+[![GoDoc](https://godoc.org/github.com/ancientlore/go-avltree?status.png)](https://godoc.org/github.com/ancientlore/go-avltree)
+[![status](https://sourcegraph.com/api/repos/github.com/ancientlore/go-avltree/.badges/status.png)](https://sourcegraph.com/github.com/ancientlore/go-avltree)
+[gocover](http://gocover.io/github.com/ancientlore/go-avltree)
+
 An [AVL tree](http://en.wikipedia.org/wiki/AVL_tree) (Adel'son-Vel'skii & Landis) is a binary search tree in which the heights of the left and right subtrees of the root differ by at most one and in which the left and right subtrees are again AVL trees.
 
 With each node of an AVL tree is associated a balance factor that is Left High, Equal, or Right High according, respectively, as the left subtree has height greater than, equal to, or less than that of the right subtree.
@@ -23,7 +29,3 @@ To install, you can use:
 	go get github.com/ancientlore/go-avltree
 
 See some sample code at https://gist.github.com/ancientlore/8855122
-
-[![GoDoc](https://godoc.org/github.com/ancientlore/go-avltree?status.png)](https://godoc.org/github.com/ancientlore/go-avltree)
-[![status](https://sourcegraph.com/api/repos/github.com/ancientlore/go-avltree/.badges/status.png)](https://sourcegraph.com/github.com/ancientlore/go-avltree)
-[gocover](http://gocover.io/github.com/ancientlore/go-avltree)
