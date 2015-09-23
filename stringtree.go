@@ -19,7 +19,7 @@ func stringCompare(s1 interface{}, s2 interface{}) int {
 }
 
 // Iterate function
-type StringIterateFunc func(v string)
+type StringIterateFunc func(v string) bool
 
 // Initialize or reset a StringTree
 func (t *StringTree) Init(flags byte) *StringTree {
@@ -51,12 +51,14 @@ func (t *StringTree) Find(key string) string {
 
 // Do calls function f for each element of the tree, in order.
 // The function should not change the structure of the tree underfoot.
-func (t *StringTree) Do(f StringIterateFunc) { t.Tree.Do(func(v interface{}) { f(v.(string)) }) }
+func (t *StringTree) Do(f StringIterateFunc) {
+	t.Tree.Do(func(v interface{}) bool { return f(v.(string)) })
+}
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
 func (t *StringTree) chanIterate(c chan<- string) {
-	t.Do(func(v string) { c <- v })
+	t.Do(func(v string) bool { c <- v; return true })
 	close(c)
 }
 
@@ -72,9 +74,10 @@ func (t *StringTree) Data() []string {
 	arr := make([]string, t.Len())
 	var i int
 	i = 0
-	t.Do(func(v string) {
+	t.Do(func(v string) bool {
 		arr[i] = v
 		i++
+		return true
 	})
 	return arr
 }
@@ -110,5 +113,5 @@ func (t *StringTree) RemoveAt(index int) string {
 }
 
 func (t *StringTree) Print(w io.Writer, f StringIterateFunc, itemSiz int) {
-	t.Tree.Print(w, func(v interface{}) { f(v.(string)) }, itemSiz)
+	t.Tree.Print(w, func(v interface{}) bool { return f(v.(string)) }, itemSiz)
 }

@@ -26,7 +26,7 @@ func (a Pair) Compare(b Interface) int {
 }
 
 // Iterate function
-type PairIterateFunc func(v Pair)
+type PairIterateFunc func(v Pair) bool
 
 // Initialize or reset a StringTree
 func (t *PairTree) Init(flags byte) *PairTree {
@@ -60,12 +60,14 @@ func (t *PairTree) Find(key string) *Pair {
 
 // Do calls function f for each element of the tree, in order.
 // The function should not change the structure of the tree underfoot.
-func (t *PairTree) Do(f PairIterateFunc) { t.ObjectTree.Do(func(v interface{}) { f(v.(Pair)) }) }
+func (t *PairTree) Do(f PairIterateFunc) {
+	t.ObjectTree.Do(func(v interface{}) bool { return f(v.(Pair)) })
+}
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
 func (t *PairTree) chanIterate(c chan<- Pair) {
-	t.Do(func(v Pair) { c <- v })
+	t.Do(func(v Pair) bool { c <- v; return true })
 	close(c)
 }
 
@@ -81,9 +83,10 @@ func (t *PairTree) Data() []Pair {
 	arr := make([]Pair, t.Len())
 	var i int
 	i = 0
-	t.Do(func(v Pair) {
+	t.Do(func(v Pair) bool {
 		arr[i] = v
 		i++
+		return true
 	})
 	return arr
 }
@@ -123,5 +126,5 @@ func (t *PairTree) RemoveAt(index int) *Pair {
 
 // Print the values in the tree
 func (t *PairTree) Print(w io.Writer, f PairIterateFunc, itemSiz int) {
-	t.ObjectTree.Print(w, func(v interface{}) { f(v.(Pair)) }, itemSiz)
+	t.ObjectTree.Print(w, func(v interface{}) bool { return f(v.(Pair)) }, itemSiz)
 }
