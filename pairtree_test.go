@@ -145,7 +145,7 @@ func TestPairTree(t *testing.T) {
 	// test Do
 
 	x := ""
-	tree.Do(func(z Pair) { x += z.Key })
+	tree.Do(func(z Pair) bool { x += z.Key; return true })
 
 	if x != "barfoofoo" {
 		t.Errorf("Do function did not concat values correctly, expected barfoofoo: %d\n", x)
@@ -219,13 +219,14 @@ func TestPairTree(t *testing.T) {
 	prev = ""
 
 	// make sure elements sorted
-	tree.Do(func(elem Pair) {
+	tree.Do(func(elem Pair) bool {
 		var cur string
 		cur = elem.Key
 		if prev > cur {
 			t.Errorf("Elements not in order, previous = %d, current = %d\n", prev, cur)
 		}
 		prev = cur
+		return true
 	})
 
 }
