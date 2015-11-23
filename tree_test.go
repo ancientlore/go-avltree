@@ -159,7 +159,7 @@ func TestTree(t *testing.T) {
 	// test Do
 
 	x := 0
-	tree.Do(func(z interface{}) { x += z.(int) })
+	tree.Do(func(z interface{}) bool { x += z.(int); return true })
 
 	if x != 43 {
 		t.Errorf("Do function did not add up values correctly, expected 43: %d\n", x)
@@ -233,13 +233,14 @@ func TestTree(t *testing.T) {
 	prev = -1
 
 	// make sure elements sorted
-	tree.Do(func(elem interface{}) {
+	tree.Do(func(elem interface{}) bool {
 		var cur int
 		cur = elem.(int)
 		if prev > cur {
 			t.Errorf("Elements not in order, previous = %d, current = %d\n", prev, cur)
 		}
 		prev = cur
+		return true
 	})
 
 }

@@ -38,7 +38,7 @@ const (
 type CompareFunc func(v1 interface{}, v2 interface{}) int
 
 // Iterate function
-type IterateFunc func(v interface{})
+type IterateFunc func(v interface{}) bool
 
 // Tree object
 type Tree struct {
@@ -201,17 +201,29 @@ type iterData struct {
 
 // iterate recursively traverses the tree and executes
 // the iteration function
-func (d *iterData) iterate(node *treeNode) {
+func (d *iterData) iterate(node *treeNode) bool {
+	var proceed bool
 
 	if node.left != nil {
-		d.iterate(node.left)
+		proceed = d.iterate(node.left)
+		if !proceed {
+			return false
+		}
 	}
 
-	d.iter(node.value)
+	proceed = d.iter(node.value)
+	if !proceed {
+		return false
+	}
 
 	if node.right != nil {
-		d.iterate(node.right)
+		proceed = d.iterate(node.right)
+		if !proceed {
+			return false
+		}
 	}
+
+	return true
 }
 
 // Do calls function f for each element of the tree, in order.
@@ -227,7 +239,7 @@ func (t *Tree) Do(f IterateFunc) {
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
 func (t *Tree) chanIterate(c chan<- interface{}) {
-	t.Do(func(v interface{}) { c <- v })
+	t.Do(func(v interface{}) bool { c <- v; return true })
 	close(c)
 }
 
@@ -243,9 +255,10 @@ func (t *Tree) Data() []interface{} {
 	arr := make([]interface{}, t.Len())
 	var i int
 	i = 0
-	t.Do(func(v interface{}) {
+	t.Do(func(v interface{}) bool {
 		arr[i] = v
 		i++
+		return true
 	})
 	return arr
 }

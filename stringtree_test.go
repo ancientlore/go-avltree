@@ -150,7 +150,7 @@ func TestStringTree(t *testing.T) {
 	// test Do
 
 	x := ""
-	tree.Do(func(z string) { x += z })
+	tree.Do(func(z string) bool { x += z; return true })
 
 	if x != "141415" {
 		t.Errorf("Do function did not concatvalues correctly, expected 141415: %d\n", x)
@@ -224,13 +224,14 @@ func TestStringTree(t *testing.T) {
 	prev = ""
 
 	// make sure elements sorted
-	tree.Do(func(elem string) {
+	tree.Do(func(elem string) bool {
 		var cur string
 		cur = elem
 		if prev > cur {
 			t.Errorf("Elements not in order, previous = %d, current = %d\n", prev, cur)
 		}
 		prev = cur
+		return true
 	})
 
 }
