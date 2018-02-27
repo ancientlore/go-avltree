@@ -1,4 +1,7 @@
 /*
+Package avltree implements a height-balanced binary tree
+with array-like indexing capability.
+
 An AVL tree (Adel'son-Vel'skii & Landis) is a binary search
 tree in which the heights of the left and right subtrees
 of the root differ by at most one and in which the left
@@ -34,13 +37,13 @@ const (
 	AllowDuplicates = 1
 )
 
-// Definition of a comparison function
+// CompareFunc defines the function type used to compare values.
 type CompareFunc func(v1 interface{}, v2 interface{}) int
 
-// Iterate function
+// IterateFunc defines the function type used for iterating a tree.
 type IterateFunc func(v interface{}) bool
 
-// Tree object
+// Tree stores data about the binary tree.
 type Tree struct {
 	// root of the tree
 	root *treeNode
@@ -52,7 +55,7 @@ type Tree struct {
 	treeFlags byte
 }
 
-// Initialize or reset a Tree
+// Init initializes or resets a Tree.
 func (t *Tree) Init(c CompareFunc, flags byte) *Tree {
 	t.compare = c
 	t.root = nil
@@ -60,11 +63,11 @@ func (t *Tree) Init(c CompareFunc, flags byte) *Tree {
 	return t
 }
 
-// Return an initialized tree
+// New returns an initialized tree.
 func New(c CompareFunc, flags byte) *Tree { return new(Tree).Init(c, flags) }
 
 // Clear removes all elements from the tree, keeping the
-// current options and compare function
+// current options and compare function.
 func (t *Tree) Clear() { t.Init(t.compare, t.treeFlags) }
 
 // calcHeightData contains information needed to compute the
@@ -105,7 +108,7 @@ func (t *Tree) Height() int {
 	return d.maxHeight
 }
 
-// Len returns the number of elements in the tree
+// Len returns the number of elements in the tree.
 func (t *Tree) Len() int {
 	if t.root != nil {
 		return t.root.size
@@ -132,7 +135,7 @@ func (t *Tree) Cap() int {
 }
 
 // indexer recursively scans the tree to find the node
-// at the given position
+// at the given position.
 func indexer(node *treeNode, index int) *treeNode {
 
 	if index < node.leftSize() {
@@ -145,7 +148,7 @@ func indexer(node *treeNode, index int) *treeNode {
 	return nil
 }
 
-// At returns the value at the given index
+// At returns the value at the given index.
 func (t *Tree) At(index int) interface{} {
 
 	if t.root != nil && index < t.root.size && index >= 0 {
@@ -158,14 +161,14 @@ func (t *Tree) At(index int) interface{} {
 	return nil
 }
 
-// findData is used when searching the tree
+// findData is used when searching the tree.
 type findData struct {
 	lookingFor interface{}
 	compare    CompareFunc
 }
 
 // finder recursively scans the tree to find the node with the
-// value we're looking for
+// value we're looking for.
 func (d *findData) finder(node *treeNode) *treeNode {
 
 	if node != nil {
@@ -181,7 +184,7 @@ func (d *findData) finder(node *treeNode) *treeNode {
 }
 
 // Find returns the element where the comparison function matches
-// the node's value and the given key value
+// the node's value and the given key value.
 func (t *Tree) Find(key interface{}) interface{} {
 	if key != nil && t.root != nil {
 		d := &findData{key, t.compare}
@@ -194,13 +197,13 @@ func (t *Tree) Find(key interface{}) interface{} {
 	return nil
 }
 
-// iterData is used when iterating the tree
+// iterData is used when iterating the tree.
 type iterData struct {
 	iter IterateFunc
 }
 
 // iterate recursively traverses the tree and executes
-// the iteration function
+// the iteration function.
 func (d *iterData) iterate(node *treeNode) bool {
 	var proceed bool
 
@@ -243,7 +246,7 @@ func (t *Tree) chanIterate(c chan<- interface{}) {
 	close(c)
 }
 
-// Iter returns a channel you can read through to fetch all the items
+// Iter returns a channel you can read through to fetch all the items.
 func (t *Tree) Iter() <-chan interface{} {
 	c := make(chan interface{})
 	go t.chanIterate(c)

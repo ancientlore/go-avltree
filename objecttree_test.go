@@ -163,7 +163,7 @@ func TestObjectTree(t *testing.T) {
 	tree.Do(func(z interface{}) bool { x += z.(MyObject).Key; return true })
 
 	if x != "barfoofoo" {
-		t.Errorf("Do function did not concat values correctly, expected barfoofoo: %d\n", x)
+		t.Errorf("Do function did not concat values correctly, expected barfoofoo: %s\n", x)
 	}
 
 	// test Remove
@@ -238,7 +238,7 @@ func TestObjectTree(t *testing.T) {
 		var cur string
 		cur = elem.(MyObject).Key
 		if prev > cur {
-			t.Errorf("Elements not in order, previous = %d, current = %d\n", prev, cur)
+			t.Errorf("Elements not in order, previous = %s, current = %s\n", prev, cur)
 		}
 		prev = cur
 		return true

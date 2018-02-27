@@ -69,6 +69,7 @@ func (d *printData) printer(node *treeNode) {
 	d.lineDepth -= (d.itemSize + 5)
 }
 
+// Print prints the values of the Tree to the given writer.
 func (t *Tree) Print(w io.Writer, f IterateFunc, itemSiz int) {
 
 	fmt.Fprintf(w, "treeNode-+-Left \t / Left High\n")

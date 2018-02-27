@@ -18,19 +18,19 @@ func stringCompare(s1 interface{}, s2 interface{}) int {
 	return 0
 }
 
-// Iterate function
+// StringIterateFunc defines the function type used when iterating a StringTree.
 type StringIterateFunc func(v string) bool
 
-// Initialize or reset a StringTree
+// Init will initialize or reset a StringTree.
 func (t *StringTree) Init(flags byte) *StringTree {
 	t.Tree.Init(stringCompare, flags)
 	return t
 }
 
-// Return an initialized StringTree
+// NewStringTree returns an initialized StringTree.
 func NewStringTree(flags byte) *StringTree { return new(StringTree).Init(flags) }
 
-// At returns the value at the given index
+// At returns the value at the given index.
 func (t *StringTree) At(index int) string {
 	v := t.Tree.At(index)
 	if v != nil {
@@ -40,7 +40,7 @@ func (t *StringTree) At(index int) string {
 }
 
 // Find returns the element where the comparison function matches
-// the node's value and the given key value
+// the node's value and the given key value.
 func (t *StringTree) Find(key string) string {
 	v := t.Tree.Find(key)
 	if v != nil {
@@ -62,7 +62,7 @@ func (t *StringTree) chanIterate(c chan<- string) {
 	close(c)
 }
 
-// Iter returns a channel you can read through to fetch all the items
+// Iter returns a channel you can read through to fetch all the items.
 func (t *StringTree) Iter() <-chan string {
 	c := make(chan string)
 	go t.chanIterate(c)
@@ -103,7 +103,7 @@ func (t *StringTree) Remove(ptr string) string {
 	return ""
 }
 
-// Remove removes the element at the given index
+// RemoveAt removes the element at the given index.
 func (t *StringTree) RemoveAt(index int) string {
 	v := t.Tree.RemoveAt(index)
 	if v != nil {
@@ -112,6 +112,7 @@ func (t *StringTree) RemoveAt(index int) string {
 	return ""
 }
 
+// Print prints the values of the StringTree to the given writer.
 func (t *StringTree) Print(w io.Writer, f StringIterateFunc, itemSiz int) {
 	t.Tree.Print(w, func(v interface{}) bool { return f(v.(string)) }, itemSiz)
 }

@@ -9,13 +9,13 @@ type PairTree struct {
 	ObjectTree
 }
 
-// Pair structure holds your key and value
+// Pair combines a key and value.
 type Pair struct {
 	Key   string
 	Value interface{}
 }
 
-// compare function for Pairs
+// Compare is the compare function for Pairs, based on Key.
 func (a Pair) Compare(b Interface) int {
 	if a.Key < b.(Pair).Key {
 		return -1
@@ -25,19 +25,19 @@ func (a Pair) Compare(b Interface) int {
 	return 0
 }
 
-// Iterate function
+// PairIterateFunc is the type of function used for iterating across Pairs.
 type PairIterateFunc func(v Pair) bool
 
-// Initialize or reset a StringTree
+// Init will initialize or reset a PairTree.
 func (t *PairTree) Init(flags byte) *PairTree {
 	t.ObjectTree.Init(flags)
 	return t
 }
 
-// Return an initialized StringTree
+// NewPairTree returns an initialized PairTree.
 func NewPairTree(flags byte) *PairTree { return new(PairTree).Init(flags) }
 
-// At returns the value at the given index
+// At returns the value at the given index.
 func (t *PairTree) At(index int) *Pair {
 	v := t.ObjectTree.At(index)
 	if v != nil {
@@ -48,7 +48,7 @@ func (t *PairTree) At(index int) *Pair {
 }
 
 // Find returns the element where the comparison function matches
-// the node's value and the given key value
+// the node's value and the given key value.
 func (t *PairTree) Find(key string) *Pair {
 	v := t.ObjectTree.Find(Pair{key, nil})
 	if v != nil {
@@ -71,7 +71,7 @@ func (t *PairTree) chanIterate(c chan<- Pair) {
 	close(c)
 }
 
-// Iter returns a channel you can read through to fetch all the items
+// Iter returns a channel you can read through to fetch all the items.
 func (t *PairTree) Iter() <-chan Pair {
 	c := make(chan Pair)
 	go t.chanIterate(c)
@@ -114,7 +114,7 @@ func (t *PairTree) Remove(ptr string) *Pair {
 	return nil
 }
 
-// Remove removes the element at the given index
+// RemoveAt removes the element at the given index.
 func (t *PairTree) RemoveAt(index int) *Pair {
 	v := t.ObjectTree.RemoveAt(index)
 	if v != nil {
@@ -124,7 +124,7 @@ func (t *PairTree) RemoveAt(index int) *Pair {
 	return nil
 }
 
-// Print the values in the tree
+// Print prints the values in the tree to the writer.
 func (t *PairTree) Print(w io.Writer, f PairIterateFunc, itemSiz int) {
 	t.ObjectTree.Print(w, func(v interface{}) bool { return f(v.(Pair)) }, itemSiz)
 }

@@ -248,7 +248,7 @@ func remove(node **treeNode, index int, shorter *bool) interface{} {
 	return ptr
 }
 
-// Remove removes the element at the given index
+// RemoveAt removes the element at the given index.
 func (t *Tree) RemoveAt(index int) interface{} {
 	if t.root != nil && index < t.root.size && index >= 0 {
 		var shorter bool

@@ -125,7 +125,7 @@ func TestStringTree(t *testing.T) {
 	// test Find
 	var st string
 	if st != "" {
-		t.Errorf("Init string != empty string\n", st)
+		t.Errorf("Init string != empty string: %s\n", st)
 	}
 
 	v = tree.Find("15")
@@ -153,7 +153,7 @@ func TestStringTree(t *testing.T) {
 	tree.Do(func(z string) bool { x += z; return true })
 
 	if x != "141415" {
-		t.Errorf("Do function did not concatvalues correctly, expected 141415: %d\n", x)
+		t.Errorf("Do function did not concatvalues correctly, expected 141415: %s\n", x)
 	}
 
 	// test Remove
@@ -186,7 +186,7 @@ func TestStringTree(t *testing.T) {
 	}
 
 	if x != "20" {
-		t.Errorf("Iter ran wrong number of elements, expected last element of 20, got %d\n", x)
+		t.Errorf("Iter ran wrong number of elements, expected last element of 20, got %s\n", x)
 	}
 
 	// test clear
@@ -228,7 +228,7 @@ func TestStringTree(t *testing.T) {
 		var cur string
 		cur = elem
 		if prev > cur {
-			t.Errorf("Elements not in order, previous = %d, current = %d\n", prev, cur)
+			t.Errorf("Elements not in order, previous = %s, current = %s\n", prev, cur)
 		}
 		prev = cur
 		return true
