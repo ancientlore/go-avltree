@@ -32,3 +32,14 @@ See some sample code at https://gist.github.com/ancientlore/8855122
 ## v2
 
 The v2 branch starts to explore Go's upcoming generics and is a work in progress.
+
+Run tests using:
+
+	go tool go2go test
+
+For more information see:
+
+* https://go.googlesource.com/proposal/+/refs/heads/master/design/go2draft-type-parameters.md
+* https://go2goplay.golang.org/
+* https://blog.golang.org/generics-next-step
+* https://go.googlesource.com/go/+/refs/heads/dev.go2go/README.go2go.md
