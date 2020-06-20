@@ -5,16 +5,16 @@ import (
 	"io"
 )
 
-type printData struct {
+type printData(type T) struct {
 	lineDepth int
 	itemSize  int
 	array     []byte
 	index     int
-	iter      IterateFunc
+	iter      IterateFunc(T)
 	w         io.Writer
 }
 
-func (d *printData) printer(node *treeNode) {
+func (d *printData(T)) printer(node *treeNode(T)) {
 	d.iter(node.value)
 	fmt.Fprintf(d.w, "-%03d", node.size)
 	if node.bal == equal {
@@ -70,7 +70,7 @@ func (d *printData) printer(node *treeNode) {
 }
 
 // Print prints the values of the Tree to the given writer.
-func (t *Tree) Print(w io.Writer, f IterateFunc, itemSiz int) {
+func (t *Tree(T)) Print(w io.Writer, f IterateFunc(T), itemSiz int) {
 
 	fmt.Fprintf(w, "treeNode-+-Left \t / Left High\n")
 	fmt.Fprintf(w, "     |      \t = Equal\n")
@@ -79,7 +79,7 @@ func (t *Tree) Print(w io.Writer, f IterateFunc, itemSiz int) {
 	maxHeight := t.Height()
 
 	if f != nil && t.root != nil {
-		d := &printData{0, itemSiz, make([]byte, maxHeight), 0, f, w}
+		d := &printData(T){0, itemSiz, make([]byte, maxHeight), 0, f, w}
 		d.printer(t.root)
 	}
 }

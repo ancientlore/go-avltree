@@ -1,11 +1,11 @@
 package avltree
 
-type removeData struct {
-	lookingFor interface{}
-	compare    CompareFunc
+type removeData(type T) struct {
+	lookingFor T
+	compare    CompareFunc(T)
 }
 
-func findPredecessor(node *treeNode) *treeNode {
+func findPredecessor(type T)(node *treeNode(T)) *treeNode(T) {
 	if node != nil {
 		pred := node.left
 		if pred != nil {
@@ -18,9 +18,9 @@ func findPredecessor(node *treeNode) *treeNode {
 	return nil
 }
 
-func remLeftSubBalance(node *treeNode, shorter bool) (*treeNode, bool) {
+func remLeftSubBalance(type T)(node *treeNode(T), shorter bool) (*treeNode(T), bool) {
 	q := node.right // q: root of taller subtree
-	var w *treeNode
+	var w *treeNode(T)
 
 	switch q.bal {
 	case equal:
@@ -53,9 +53,9 @@ func remLeftSubBalance(node *treeNode, shorter bool) (*treeNode, bool) {
 	return node, shorter
 }
 
-func remRightSubBalance(node *treeNode, shorter bool) (*treeNode, bool) {
+func remRightSubBalance(type T)(node *treeNode(T), shorter bool) (*treeNode(T), bool) {
 	q := node.left // q: root of taller subtree
-	var w *treeNode
+	var w *treeNode(T)
 
 	switch q.bal {
 	case equal:
@@ -88,7 +88,7 @@ func remRightSubBalance(node *treeNode, shorter bool) (*treeNode, bool) {
 	return node, shorter
 }
 
-func removePredecessor(node *treeNode, shorter bool) (*treeNode, bool) {
+func removePredecessor(type T)(node *treeNode(T), shorter bool) (*treeNode(T), bool) {
 	if node.right != nil {
 		node.right, shorter = removePredecessor(node.right, shorter)
 
@@ -104,7 +104,7 @@ func removePredecessor(node *treeNode, shorter bool) (*treeNode, bool) {
 	return node, shorter
 }
 
-func remLeftBalance(node *treeNode, shorter bool) (*treeNode, bool) {
+func remLeftBalance(type T)(node *treeNode(T), shorter bool) (*treeNode(T), bool) {
 
 	switch node.bal {
 	case equal: // one subtree shortened
@@ -118,7 +118,7 @@ func remLeftBalance(node *treeNode, shorter bool) (*treeNode, bool) {
 	return node, shorter
 }
 
-func remRightBalance(node *treeNode, shorter bool) (*treeNode, bool) {
+func remRightBalance(type T)(node *treeNode(T), shorter bool) (*treeNode(T), bool) {
 
 	switch node.bal {
 	case equal: // one subtree shortened
@@ -132,7 +132,7 @@ func remRightBalance(node *treeNode, shorter bool) (*treeNode, bool) {
 	return node, shorter
 }
 
-func remNode(node *treeNode) *treeNode {
+func remNode(type T)(node *treeNode(T)) *treeNode(T) {
 	if node.left != nil {
 		node = node.left
 	} else if node.right != nil {
@@ -143,11 +143,10 @@ func remNode(node *treeNode) *treeNode {
 	return node
 }
 
-func (d *removeData) remove(node **treeNode, shorter *bool) interface{} {
+func (d *removeData(T)) remove(node **treeNode(T), shorter *bool) *T {
 
 	*shorter = true // default: shorter
-	var ptr interface{}
-	ptr = nil
+	var ptr *T
 
 	code := d.compare(d.lookingFor, (*node).value)
 
@@ -168,7 +167,7 @@ func (d *removeData) remove(node **treeNode, shorter *bool) interface{} {
 			}
 		}
 	} else {
-		ptr = (*node).value
+		ptr = &(*node).value
 
 		if (*node).left != nil && (*node).right != nil { // do the switch to find the prev.
 			// node with only one subtree
@@ -192,9 +191,9 @@ func (d *removeData) remove(node **treeNode, shorter *bool) interface{} {
 }
 
 // Remove removes the element matching the given value.
-func (t *Tree) Remove(ptr interface{}) interface{} {
-	if ptr != nil && t.root != nil {
-		d := &removeData{ptr, t.compare}
+func (t *Tree(T)) Remove(ptr T) *T {
+	if t.root != nil {
+		d := &removeData(T){ptr, t.compare}
 		var shorter bool
 		return d.remove(&(t.root), &shorter)
 	}
@@ -202,11 +201,10 @@ func (t *Tree) Remove(ptr interface{}) interface{} {
 	return nil
 }
 
-func remove(node **treeNode, index int, shorter *bool) interface{} {
+func remove(type T)(node **treeNode(T), index int, shorter *bool) *T {
 
 	*shorter = true // default: shorter
-	var ptr interface{}
-	ptr = nil
+	var ptr *T
 
 	if index < (*node).leftSize() {
 		if (*node).left != nil {
@@ -217,7 +215,7 @@ func remove(node **treeNode, index int, shorter *bool) interface{} {
 			}
 		}
 	} else if index == (*node).leftSize() {
-		ptr = (*node).value
+		ptr = &(*node).value
 
 		if (*node).left != nil && (*node).right != nil { // do the switch to find the prev.
 			// node with only one subtree
@@ -249,7 +247,7 @@ func remove(node **treeNode, index int, shorter *bool) interface{} {
 }
 
 // RemoveAt removes the element at the given index.
-func (t *Tree) RemoveAt(index int) interface{} {
+func (t *Tree(T)) RemoveAt(index int) *T {
 	if t.root != nil && index < t.root.size && index >= 0 {
 		var shorter bool
 		return remove(&(t.root), index, &shorter)

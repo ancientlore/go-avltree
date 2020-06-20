@@ -28,3 +28,7 @@ To install, you can use:
 	go get github.com/ancientlore/go-avltree
 
 See some sample code at https://gist.github.com/ancientlore/8855122
+
+## v2
+
+The v2 branch starts to explore Go's upcoming generics and is a work in progress.

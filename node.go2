@@ -8,12 +8,12 @@ const (
 )
 
 // treeNode is a node in the tree
-type treeNode struct {
+type treeNode(type T) struct {
 	// left and right nodes
-	left, right *treeNode
+	left, right *treeNode(T)
 
 	// The contents of this node
-	value interface{}
+	value T
 
 	// The balance factor of this node
 	bal byte
@@ -23,7 +23,7 @@ type treeNode struct {
 }
 
 // Init initializes a node with the given value
-func (n *treeNode) init(val interface{}) *treeNode {
+func (n *treeNode(T)) init(val T) *treeNode(T) {
 	n.left = nil
 	n.right = nil
 	n.bal = equal
@@ -33,11 +33,11 @@ func (n *treeNode) init(val interface{}) *treeNode {
 }
 
 // newNode returns an initialized treeNode
-func newNode(val interface{}) *treeNode { return new(treeNode).init(val) }
+func newNode(type T)(val T) *treeNode(T) { return new(treeNode(T)).init(val) }
 
 // leftSize returns the size of the left subtree
 // of the node
-func (n *treeNode) leftSize() int {
+func (n *treeNode(T)) leftSize() int {
 	if n.left != nil {
 		return n.left.size
 	}
@@ -46,7 +46,7 @@ func (n *treeNode) leftSize() int {
 
 // rightSize returns the size of the right subtree
 // of the node
-func (n treeNode) rightSize() int {
+func (n treeNode(T)) rightSize() int {
 	if n.right != nil {
 		return n.right.size
 	}

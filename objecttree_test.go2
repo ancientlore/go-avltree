@@ -6,32 +6,42 @@ import (
 	"testing"
 )
 
-func TestPairTree(t *testing.T) {
+type MyObject struct {
+	Key   string
+	Value string
+}
+
+func TestObjectTree(t *testing.T) {
 
 	// no duplicates tests
 
-	tree := NewPairTree(0)
+	tree := New(MyObject)(func(a, b MyObject) int {
+		if a.Key < b.Key {
+			return -1
+		}
+		if a.Key > b.Key {
+			return 1
+		}
+		return 0
 
-	if tree.Tree.root != nil {
-		t.Errorf("Initialized tree root should be nil: %v\n", tree.Tree.root)
+	}, 0)
+
+	if tree.root != nil {
+		t.Errorf("Initialized tree root should be nil: %v\n", tree.root)
 	}
 
-	if tree.Tree.treeFlags != 0 {
-		t.Errorf("Initialized tree flags should be zero: %v\n", tree.Tree.treeFlags)
+	if tree.treeFlags != 0 {
+		t.Errorf("Initialized tree flags should be zero: %v\n", tree.treeFlags)
 	}
-
-	//if tree.Tree.compare != objectCompare {
-	//	t.Errorf("Initialized tree compare function not correct: %v\n", tree.Tree.compare)
-	//}
 
 	if tree.Len() != 0 || tree.Cap() != 0 || tree.Height() != 0 {
 		t.Errorf("Initialized tree sizes should all be zero: %d Len, %d Cap, %d Height\n",
 			tree.Len(), tree.Cap(), tree.Height())
 	}
 
-	v, dupe := tree.Add(Pair{"foo", "bar"})
+	v, dupe := tree.Add(MyObject{"foo", "bar"})
 
-	if v.Key != "foo" || dupe != false {
+	if v == nil || v.Key != "foo" || dupe != false {
 		t.Errorf("Result of add should be foo/false: %v/%v\n", v, dupe)
 	}
 
@@ -40,23 +50,25 @@ func TestPairTree(t *testing.T) {
 			tree.Len(), tree.Cap(), tree.Height())
 	}
 
-	if tree.At(0).Key != "foo" {
+	v = tree.At(0)
+	if v == nil || v.Key != "foo" {
 		t.Errorf("Single value should be foo: %v\n", tree.At(0))
 	}
 
-	v, dupe = tree.Add(Pair{"foo", "baz"})
+	v, dupe = tree.Add(MyObject{"foo", "baz"})
 
-	if v.Key != "foo" || dupe != true {
+	if v == nil || v.Key != "foo" || dupe != true {
 		t.Errorf("Result of add should be foo/true: %v/%v\n", v, dupe)
 	}
 
-	v, dupe = tree.Add(Pair{"bar", "baz"})
+	v, dupe = tree.Add(MyObject{"bar", "baz"})
 
-	if v.Key != "bar" || dupe != false {
+	if v == nil || v.Key != "bar" || dupe != false {
 		t.Errorf("Result of add should be bar/false: %v/%v\n", v, dupe)
 	}
 
-	if tree.At(1).Key != "foo" {
+	v = tree.At(1)
+	if v == nil || v.Key != "foo" {
 		t.Errorf("Second value should be foo: %v\n", tree.At(0))
 	}
 
@@ -67,28 +79,24 @@ func TestPairTree(t *testing.T) {
 
 	// reinitialize and allow duplicates
 
-	tree.Init(AllowDuplicates)
+	tree.Init(tree.compare, AllowDuplicates)
 
-	if tree.Tree.root != nil {
-		t.Errorf("Reinitialized tree root should be nil: %v\n", tree.Tree.root)
+	if tree.root != nil {
+		t.Errorf("Reinitialized tree root should be nil: %v\n", tree.root)
 	}
 
-	if tree.Tree.treeFlags != AllowDuplicates {
-		t.Errorf("Reinitialized tree flags should be AllowDuplicates: %v\n", tree.Tree.treeFlags)
+	if tree.treeFlags != AllowDuplicates {
+		t.Errorf("Reinitialized tree flags should be AllowDuplicates: %v\n", tree.treeFlags)
 	}
-
-	//if tree.Tree.compare != objectCompare {
-	//	t.Errorf("Reinitialized tree compare function not correct: %v\n", tree.Tree.compare)
-	//}
 
 	if tree.Len() != 0 || tree.Cap() != 0 || tree.Height() != 0 {
 		t.Errorf("Initialized tree sizes should all be zero: %d Len, %d Cap, %d Height\n",
 			tree.Len(), tree.Cap(), tree.Height())
 	}
 
-	v, dupe = tree.Add(Pair{"foo", "baz"})
+	v, dupe = tree.Add(MyObject{"foo", "baz"})
 
-	if v.Key != "foo" || dupe != false {
+	if v == nil || v.Key != "foo" || dupe != false {
 		t.Errorf("Result of add should be foo/false: %v/%v\n", v, dupe)
 	}
 
@@ -97,23 +105,25 @@ func TestPairTree(t *testing.T) {
 			tree.Len(), tree.Cap(), tree.Height())
 	}
 
-	if tree.At(0).Key != "foo" {
+	v = tree.At(0)
+	if v == nil || v.Key != "foo" {
 		t.Errorf("Single value should be foo: %v\n", tree.At(0))
 	}
 
-	v, dupe = tree.Add(Pair{"foo", "baz"})
+	v, dupe = tree.Add(MyObject{"foo", "baz"})
 
-	if v.Key != "foo" || dupe != false {
+	if v == nil || v.Key != "foo" || dupe != false {
 		t.Errorf("Result of add should be foo/false: %v/%v\n", v, dupe)
 	}
 
-	v, dupe = tree.Add(Pair{"bar", "baz"})
+	v, dupe = tree.Add(MyObject{"bar", "baz"})
 
-	if v.Key != "bar" || dupe != false {
+	if v == nil || v.Key != "bar" || dupe != false {
 		t.Errorf("Result of add should be bar/false: %v/%v\n", v, dupe)
 	}
 
-	if tree.At(2).Key != "foo" {
+	v = tree.At(2)
+	if v == nil || v.Key != "foo" {
 		t.Errorf("Third value should be foo: %v\n", tree.At(0))
 	}
 
@@ -123,13 +133,13 @@ func TestPairTree(t *testing.T) {
 	}
 
 	// test Find
-	v = tree.Find("bar")
+	v = tree.Find(MyObject{"bar", ""})
 
 	if v == nil || v.Key != "bar" {
 		t.Errorf("Find should locate bar: %v\n", v)
 	}
 
-	v = tree.Find("foobar")
+	v = tree.Find(MyObject{"foobar", ""})
 
 	if v != nil {
 		t.Errorf("Found an item that isn't there: %v\n", v)
@@ -145,7 +155,7 @@ func TestPairTree(t *testing.T) {
 	// test Do
 
 	x := ""
-	tree.Do(func(z Pair) bool { x += z.Key; return true })
+	tree.Do(func(z MyObject) bool { x += z.Key; return true })
 
 	if x != "barfoofoo" {
 		t.Errorf("Do function did not concat values correctly, expected barfoofoo: %s\n", x)
@@ -153,13 +163,13 @@ func TestPairTree(t *testing.T) {
 
 	// test Remove
 
-	v, dupe = tree.Add(Pair{"zoo", "berlin"})
+	v, dupe = tree.Add(MyObject{"zoo", "berlin"})
 
-	if v.Key != "zoo" || dupe != false {
+	if v == nil || v.Key != "zoo" || dupe != false {
 		t.Errorf("Result of add should be zoo/false: %v/%v\n", v, dupe)
 	}
 
-	v = tree.Remove("zoo")
+	v = tree.Remove(MyObject{"zoo", ""})
 
 	if v == nil || v.Key != "zoo" || tree.Len() != 3 {
 		t.Errorf("Result of Remove should be zoo/3: %v/%v\n", v, tree.Len())
@@ -167,10 +177,10 @@ func TestPairTree(t *testing.T) {
 
 	// test Iter
 
-	tree.Add(Pair{"zeek", ""})
-	tree.Add(Pair{"jim", ""})
-	tree.Add(Pair{"zope", ""})
-	tree.Add(Pair{"yikes", ""})
+	tree.Add(MyObject{"zeek", ""})
+	tree.Add(MyObject{"jim", ""})
+	tree.Add(MyObject{"zope", ""})
+	tree.Add(MyObject{"yikes", ""})
 
 	x = "aaaa"
 	for v := range tree.Iter() {
@@ -188,17 +198,13 @@ func TestPairTree(t *testing.T) {
 
 	tree.Clear()
 
-	if tree.Tree.root != nil {
-		t.Errorf("Cleared tree root should be nil: %v\n", tree.Tree.root)
+	if tree.root != nil {
+		t.Errorf("Cleared tree root should be nil: %v\n", tree.root)
 	}
 
-	if tree.Tree.treeFlags != AllowDuplicates {
-		t.Errorf("Cleared tree flags should still be AllowDuplicates: %v\n", tree.Tree.treeFlags)
+	if tree.treeFlags != AllowDuplicates {
+		t.Errorf("Cleared tree flags should still be AllowDuplicates: %v\n", tree.treeFlags)
 	}
-
-	//if tree.Tree.compare != objectCompare {
-	//	t.Errorf("Cleared tree compare function not correct: %v\n", tree.Tree.compare)
-	//}
 
 	if tree.Len() != 0 || tree.Cap() != 0 || tree.Height() != 0 {
 		t.Errorf("Cleared tree sizes should all be zero: %d Len, %d Cap, %d Height\n",
@@ -208,7 +214,7 @@ func TestPairTree(t *testing.T) {
 	// one more test, larger data
 
 	for j := 0; j < 100000; j++ {
-		tree.Add(Pair{fmt.Sprintf("%d", rand.Int()), "Hello"})
+		tree.Add(MyObject{fmt.Sprintf("%d", rand.Int()), "Hello"})
 	}
 
 	if tree.Len() != 100000 {
@@ -219,11 +225,12 @@ func TestPairTree(t *testing.T) {
 	prev = ""
 
 	// make sure elements sorted
-	tree.Do(func(elem Pair) bool {
+	tree.Do(func(elem MyObject) bool {
 		var cur string
 		cur = elem.Key
 		if prev > cur {
 			t.Errorf("Elements not in order, previous = %s, current = %s\n", prev, cur)
+			return false
 		}
 		prev = cur
 		return true
