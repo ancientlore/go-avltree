@@ -96,7 +96,7 @@ func removePredecessor(type T)(node *treeNode(T), shorter bool) (*treeNode(T), b
 			node, shorter = remRightBalance(node, shorter)
 		}
 
-		node.size = node.leftSize() + node.rightSize() + 1
+		node.size = node.leftSize() + node.rightSize()
 	} else {
 		node = remNode(node)
 	}
@@ -184,7 +184,7 @@ func (d *removeData(T)) remove(node **treeNode(T), shorter *bool) *T {
 	}
 
 	if ptr != nil && *node != nil {
-		(*node).size = (*node).leftSize() + (*node).rightSize() + 1
+		(*node).size = (*node).leftSize() + (*node).rightSize()
 	}
 
 	return ptr
@@ -240,7 +240,7 @@ func remove(type T)(node **treeNode(T), index int, shorter *bool) *T {
 	}
 
 	if ptr != nil && *node != nil {
-		(*node).size = (*node).leftSize() + (*node).rightSize() + 1
+		(*node).size = (*node).leftSize() + (*node).rightSize()
 	}
 
 	return ptr
@@ -248,7 +248,7 @@ func remove(type T)(node **treeNode(T), index int, shorter *bool) *T {
 
 // RemoveAt removes the element at the given index.
 func (t *Tree(T)) RemoveAt(index int) *T {
-	if t.root != nil && index < t.root.size && index >= 0 {
+	if t.root != nil && index < t.root.size+1 && index >= 0 {
 		var shorter bool
 		return remove(&(t.root), index, &shorter)
 	}

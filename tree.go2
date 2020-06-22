@@ -130,7 +130,7 @@ func (t *Tree(T)) Height() int {
 // Len returns the number of elements in the tree.
 func (t *Tree(T)) Len() int {
 	if t.root != nil {
-		return t.root.size
+		return t.root.size + 1
 	}
 	return 0
 }
@@ -170,7 +170,7 @@ func indexer(type T)(node *treeNode(T), index int) *treeNode(T) {
 // At returns the value at the given index.
 func (t *Tree(T)) At(index int) *T {
 
-	if t.root != nil && index < t.root.size && index >= 0 {
+	if t.root != nil && index < t.root.size+1 && index >= 0 {
 		node := indexer(t.root, index)
 		if node != nil {
 			return &node.value

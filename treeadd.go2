@@ -12,7 +12,7 @@ func (d *addData(T)) add(node **treeNode(T), taller *bool) *T {
 	var ptr *T
 
 	if *node == nil {
-		*node = newNode(d.lookingFor)
+		*node = &treeNode(T){value: d.lookingFor}
 		*taller = true
 		if *node != nil {
 			ptr = &(*node).value
@@ -63,7 +63,7 @@ func (d *addData(T)) add(node **treeNode(T), taller *bool) *T {
 		}
 
 		if ptr != nil {
-			(*node).size = (*node).leftSize() + (*node).rightSize() + 1
+			(*node).size = (*node).leftSize() + (*node).rightSize()
 		}
 	}
 
@@ -161,8 +161,8 @@ func leftBalance(type T)(node *treeNode(T), taller bool) (*treeNode(T), bool) {
 func rotateLeft(type T)(node *treeNode(T)) *treeNode(T) {
 	if node != nil && node.right != nil {
 		ptr := node.right
-		node.size = node.leftSize() + ptr.leftSize() + 1
-		ptr.size = node.size + ptr.rightSize() + 1
+		node.size = node.leftSize() + ptr.leftSize()
+		ptr.size = node.size + 1 + ptr.rightSize()
 		node.right = ptr.left
 		ptr.left = node
 		node = ptr
@@ -173,8 +173,8 @@ func rotateLeft(type T)(node *treeNode(T)) *treeNode(T) {
 func rotateRight(type T)(node *treeNode(T)) *treeNode(T) {
 	if node != nil && node.left != nil {
 		ptr := node.left
-		node.size = node.rightSize() + ptr.rightSize() + 1
-		ptr.size = node.size + ptr.leftSize() + 1
+		node.size = node.rightSize() + ptr.rightSize()
+		ptr.size = node.size + 1 + ptr.leftSize()
 		node.left = ptr.right
 		ptr.right = node
 		node = ptr

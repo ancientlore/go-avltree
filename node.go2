@@ -9,37 +9,25 @@ const (
 
 // treeNode is a node in the tree
 type treeNode(type T) struct {
-	// left and right nodes
+	// Left and right nodes.
 	left, right *treeNode(T)
 
-	// The contents of this node
+	// The contents of this node.
 	value T
 
-	// The balance factor of this node
+	// The balance factor of this node.
 	bal byte
 
-	// The number of nodes in the subtree
+	// The number of nodes in the left and right subtrees
+	// (excludes this node).
 	size int
 }
-
-// Init initializes a node with the given value
-func (n *treeNode(T)) init(val T) *treeNode(T) {
-	n.left = nil
-	n.right = nil
-	n.bal = equal
-	n.size = 1
-	n.value = val
-	return n
-}
-
-// newNode returns an initialized treeNode
-func newNode(type T)(val T) *treeNode(T) { return new(treeNode(T)).init(val) }
 
 // leftSize returns the size of the left subtree
 // of the node
 func (n *treeNode(T)) leftSize() int {
 	if n.left != nil {
-		return n.left.size
+		return n.left.size + 1
 	}
 	return 0
 }
@@ -48,7 +36,7 @@ func (n *treeNode(T)) leftSize() int {
 // of the node
 func (n treeNode(T)) rightSize() int {
 	if n.right != nil {
-		return n.right.size
+		return n.right.size + 1
 	}
 	return 0
 }
