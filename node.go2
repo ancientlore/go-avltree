@@ -2,8 +2,8 @@ package avltree
 
 // Balance factor
 const (
-	leftHigh = iota
-	equal
+	equal = iota
+	leftHigh
 	rightHigh
 )
 
