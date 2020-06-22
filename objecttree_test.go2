@@ -79,7 +79,16 @@ func TestObjectTree(t *testing.T) {
 
 	// reinitialize and allow duplicates
 
-	tree.Init(tree.compare, AllowDuplicates)
+	tree = New(MyObject)(func(a, b MyObject) int {
+		if a.Key < b.Key {
+			return -1
+		}
+		if a.Key > b.Key {
+			return 1
+		}
+		return 0
+
+	}, AllowDuplicates)
 
 	if tree.root != nil {
 		t.Errorf("Reinitialized tree root should be nil: %v\n", tree.root)
