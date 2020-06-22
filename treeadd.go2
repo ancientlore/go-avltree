@@ -2,9 +2,9 @@ package avltree
 
 // addData holds information used when adding nodes
 type addData(type T) struct {
-	lookingFor T
-	duplicate  *T
-	tree       *Tree(T)
+	lookingFor T        // Item to add
+	duplicate  *T       // Duplicate found, if any
+	tree       *Tree(T) // tree to add to
 }
 
 func (d *addData(T)) add(node **treeNode(T), taller *bool) *T {

@@ -30,6 +30,7 @@ package avltree
 
 import (
 	"constraints"
+	"context"
 	"math"
 )
 
@@ -98,8 +99,8 @@ func (t *Tree(T)) Clear() {
 // calcHeightData contains information needed to compute the
 // height of the tree
 type calcHeightData(type T) struct {
-	currentHeight int
-	maxHeight     int
+	currentHeight int // current height of the tree
+	maxHeight     int // maximum height of the tree we found
 }
 
 // calcHeight executes recursively to determine the height
@@ -188,8 +189,8 @@ func (t *Tree(T)) At(index int) *T {
 
 // findData(T) is used when searching the tree.
 type findData(type T) struct {
-	lookingFor T
-	compare    compareFunc(T)
+	lookingFor T              // item we are searching for
+	compare    compareFunc(T) // Comparision function
 }
 
 // finder recursively scans the tree to find the node with the
@@ -260,15 +261,29 @@ func (t *Tree(T)) Do(f func(T) bool) {
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
-func (t *Tree(T)) chanIterate(c chan<- T) {
-	t.Do(func(v T) bool { c <- v; return true })
+func (t *Tree(T)) chanIterate(ctx context.Context, c chan<- T) {
+	t.Do(func(v T) bool {
+		select {
+		case c <- v:
+			return true
+		case <-ctx.Done():
+			return false
+		}
+	})
 	close(c)
 }
 
 // Iter returns a channel you can read through to fetch all the items.
 func (t *Tree(T)) Iter() <-chan T {
 	c := make(chan T)
-	go t.chanIterate(c)
+	go t.chanIterate(context.Background(), c)
+	return c
+}
+
+// IterContext returns a channel you can read through to fetch all the items.
+func (t *Tree(T)) IterContext(ctx context.Context) <-chan T {
+	c := make(chan T)
+	go t.chanIterate(ctx, c)
 	return c
 }
 

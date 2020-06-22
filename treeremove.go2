@@ -1,8 +1,9 @@
 package avltree
 
+// removeData is used to track removing an item from the tree.
 type removeData(type T) struct {
-	lookingFor T
-	compare    compareFunc(T)
+	lookingFor T              // Item to remove
+	compare    compareFunc(T) // Comparison function
 }
 
 func findPredecessor(type T)(node *treeNode(T)) *treeNode(T) {
