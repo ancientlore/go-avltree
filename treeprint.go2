@@ -70,7 +70,7 @@ func (d *printData(T)) printer(node *treeNode(T)) {
 }
 
 // Print prints the values of the Tree to the given writer.
-func (t *Tree(T)) Print(w io.Writer, f IterateFunc(T), itemSiz int) {
+func Print(type T)(t *Tree(T), w io.Writer, f IterateFunc(T), itemSiz int) {
 
 	fmt.Fprintf(w, "treeNode-+-Left \t / Left High\n")
 	fmt.Fprintf(w, "     |      \t = Equal\n")
