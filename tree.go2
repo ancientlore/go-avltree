@@ -38,11 +38,11 @@ const (
 	AllowDuplicates = 1
 )
 
-// CompareFunc defines the function type used to compare values.
-type CompareFunc(type T) func(v1 T, v2 T) int
+// compareFunc defines the function type used to compare values.
+type compareFunc(type T) func(T, T) int
 
-// IterateFunc defines the function type used for iterating a tree.
-type IterateFunc(type T) func(v T) bool
+// iterateFunc defines the function type used for iterating a tree.
+type iterateFunc(type T) func(T) bool
 
 // Tree stores data about the binary tree.
 type Tree(type T) struct {
@@ -50,14 +50,14 @@ type Tree(type T) struct {
 	root *treeNode(T)
 
 	// compare function
-	compare CompareFunc(T)
+	compare compareFunc(T)
 
 	// options controlling behavior
 	treeFlags byte
 }
 
 // Init initializes or resets a Tree.
-func (t *Tree(T)) Init(c CompareFunc(T), flags byte) *Tree(T) {
+func (t *Tree(T)) Init(c func(T, T) int, flags byte) *Tree(T) {
 	t.compare = c
 	t.root = nil
 	t.treeFlags = flags
@@ -65,22 +65,28 @@ func (t *Tree(T)) Init(c CompareFunc(T), flags byte) *Tree(T) {
 }
 
 // New returns an initialized tree.
-func New(type T)(c CompareFunc(T), flags byte) *Tree(T) {
-	 return new(Tree(T)).Init(c, flags)
+func New(type T)(c func(T, T) int, flags byte) *Tree(T) {
+	 return &Tree(T){
+		 compare: c,
+		 treeFlags: flags,
+	 }
 }
 
 // NewOdered returns an initialized tree using ordered types.
 func NewOrdered(type T constraints.Ordered)(flags byte) *Tree(T) {
-	 return new(Tree(T)).Init(func (v1, v2 T) int {
-		switch {
-		case v1 < v2:
-			return -1
-		case v1 == v2:
-			return 0
-		default:
-			return 1
-		}
-	 }, flags)
+	 return &Tree(T){
+		compare: func (v1, v2 T) int {
+			switch {
+			case v1 < v2:
+				return -1
+			case v1 == v2:
+				return 0
+			default:
+				return 1
+			}
+		},
+		treeFlags: flags,
+	}
 }
 
 // Clear removes all elements from the tree, keeping the
@@ -183,7 +189,7 @@ func (t *Tree(T)) At(index int) *T {
 // findData(T) is used when searching the tree.
 type findData(type T) struct {
 	lookingFor T
-	compare    CompareFunc(T)
+	compare    compareFunc(T)
 }
 
 // finder recursively scans the tree to find the node with the
@@ -218,7 +224,7 @@ func (t *Tree(T)) Find(key T) *T {
 
 // iterate recursively traverses the tree and executes
 // the iteration function.
-func (d IterateFunc(T)) iterate(node *treeNode(T)) bool {
+func (d iterateFunc(T)) iterate(node *treeNode(T)) bool {
 	var proceed bool
 
 	if node.left != nil {
@@ -245,10 +251,10 @@ func (d IterateFunc(T)) iterate(node *treeNode(T)) bool {
 
 // Do calls function f for each element of the tree, in order.
 // The function should not change the structure of the tree underfoot.
-func (t *Tree(T)) Do(f IterateFunc(T)) {
+func (t *Tree(T)) Do(f func(T) bool) {
 
 	if f != nil && t.root != nil {
-		f.iterate(t.root)
+		iterateFunc(T)(f).iterate(t.root)
 	}
 }
 

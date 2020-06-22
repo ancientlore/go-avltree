@@ -2,7 +2,7 @@ package avltree
 
 type removeData(type T) struct {
 	lookingFor T
-	compare    CompareFunc(T)
+	compare    compareFunc(T)
 }
 
 func findPredecessor(type T)(node *treeNode(T)) *treeNode(T) {
