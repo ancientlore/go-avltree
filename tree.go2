@@ -65,7 +65,7 @@ func New(type T)(c func(T, T) int, flags byte) *Tree(T) {
 	 }
 }
 
-// NewOdered returns an initialized tree using ordered types.
+// NewOrdered returns an initialized tree using ordered types.
 func NewOrdered(type T constraints.Ordered)(flags byte) *Tree(T) {
 	 return &Tree(T){
 		compare: func (v1, v2 T) int {
