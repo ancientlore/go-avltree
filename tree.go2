@@ -40,34 +40,34 @@ const (
 )
 
 // compareFunc defines the function type used to compare values.
-type compareFunc(type T) func(T, T) int
+type compareFunc[T any] func(T, T) int
 
 // iterateFunc defines the function type used for iterating a tree.
-type iterateFunc(type T) func(T) bool
+type iterateFunc[T any] func(T) bool
 
 // Tree stores data about the binary tree.
-type Tree(type T) struct {
+type Tree[T any] struct {
 	// root of the tree
-	root *treeNode(T)
+	root *treeNode[T]
 
 	// compare function
-	compare compareFunc(T)
+	compare compareFunc[T]
 
 	// options controlling behavior
 	treeFlags byte
 }
 
 // New returns an initialized tree.
-func New(type T)(c func(T, T) int, flags byte) *Tree(T) {
-	 return &Tree(T){
+func New[T any](c func(T, T) int, flags byte) *Tree[T] {
+	 return &Tree[T]{
 		 compare: c,
 		 treeFlags: flags,
 	 }
 }
 
 // NewOrdered returns an initialized tree using ordered types.
-func NewOrdered(type T constraints.Ordered)(flags byte) *Tree(T) {
-	 return &Tree(T){
+func NewOrdered[T constraints.Ordered](flags byte) *Tree[T] {
+	 return &Tree[T]{
 		compare: func (v1, v2 T) int {
 			switch {
 			case v1 < v2:
@@ -84,20 +84,20 @@ func NewOrdered(type T constraints.Ordered)(flags byte) *Tree(T) {
 
 // Clear removes all elements from the tree, keeping the
 // current options and compare function.
-func (t *Tree(T)) Clear() {
+func (t *Tree[T]) Clear() {
 	t.root = nil
 }
 
 // calcHeightData contains information needed to compute the
 // height of the tree
-type calcHeightData(type T) struct {
+type calcHeightData[T any] struct {
 	currentHeight int // current height of the tree
 	maxHeight     int // maximum height of the tree we found
 }
 
 // calcHeight executes recursively to determine the height
 // (number of levels) in the tree.
-func (d *calcHeightData(T)) calcHeight(node *treeNode(T)) {
+func (d *calcHeightData[T]) calcHeight(node *treeNode[T]) {
 	d.currentHeight++
 
 	if node.left != nil {
@@ -116,8 +116,8 @@ func (d *calcHeightData(T)) calcHeight(node *treeNode(T)) {
 
 // Height returns the "height" of the tree, meaning the
 // number of levels.
-func (t *Tree(T)) Height() int {
-	d := &calcHeightData(T){0, 0}
+func (t *Tree[T]) Height() int {
+	d := &calcHeightData[T]{0, 0}
 
 	if t.root != nil {
 		d.calcHeight(t.root)
@@ -127,7 +127,7 @@ func (t *Tree(T)) Height() int {
 }
 
 // Len returns the number of elements in the tree.
-func (t *Tree(T)) Len() int {
+func (t *Tree[T]) Len() int {
 	if t.root != nil {
 		return t.root.size + 1
 	}
@@ -138,7 +138,7 @@ func (t *Tree(T)) Len() int {
 // maximum elements the tree can hold with at the
 // current height. This is only useful as a measure
 // of how skewed the tree is.
-func (t *Tree(T)) Cap() int {
+func (t *Tree[T]) Cap() int {
 
 	var count, i int
 	count = 0
@@ -154,7 +154,7 @@ func (t *Tree(T)) Cap() int {
 
 // indexer recursively scans the tree to find the node
 // at the given position.
-func indexer(type T)(node *treeNode(T), index int) *treeNode(T) {
+func indexer[T any](node *treeNode[T], index int) *treeNode[T] {
 
 	if index < node.leftSize() {
 		return indexer(node.left, index)
@@ -167,7 +167,7 @@ func indexer(type T)(node *treeNode(T), index int) *treeNode(T) {
 }
 
 // At returns the value at the given index.
-func (t *Tree(T)) At(index int) *T {
+func (t *Tree[T]) At(index int) *T {
 
 	if t.root != nil && index < t.root.size+1 && index >= 0 {
 		node := indexer(t.root, index)
@@ -179,15 +179,15 @@ func (t *Tree(T)) At(index int) *T {
 	return nil
 }
 
-// findData(T) is used when searching the tree.
-type findData(type T) struct {
+// findData[T] is used when searching the tree.
+type findData[T any] struct {
 	lookingFor T              // item we are searching for
-	compare    compareFunc(T) // Comparision function
+	compare    compareFunc[T] // Comparision function
 }
 
 // finder recursively scans the tree to find the node with the
 // value we're looking for.
-func (d *findData(T)) finder(node *treeNode(T)) *treeNode(T) {
+func (d *findData[T]) finder(node *treeNode[T]) *treeNode[T] {
 
 	if node != nil {
 		code := d.compare(d.lookingFor, node.value)
@@ -203,9 +203,9 @@ func (d *findData(T)) finder(node *treeNode(T)) *treeNode(T) {
 
 // Find returns the element where the comparison function matches
 // the node's value and the given key value.
-func (t *Tree(T)) Find(key T) *T {
+func (t *Tree[T]) Find(key T) *T {
 	if t.root != nil {
-		d := &findData(T){key, t.compare}
+		d := &findData[T]{key, t.compare}
 		node := d.finder(t.root)
 		if node != nil {
 			return &node.value
@@ -217,7 +217,7 @@ func (t *Tree(T)) Find(key T) *T {
 
 // iterate recursively traverses the tree and executes
 // the iteration function.
-func (d iterateFunc(T)) iterate(node *treeNode(T)) bool {
+func (d iterateFunc[T]) iterate(node *treeNode[T]) bool {
 	var proceed bool
 
 	if node.left != nil {
@@ -244,16 +244,16 @@ func (d iterateFunc(T)) iterate(node *treeNode(T)) bool {
 
 // Do calls function f for each element of the tree, in order.
 // The function should not change the structure of the tree underfoot.
-func (t *Tree(T)) Do(f func(T) bool) {
+func (t *Tree[T]) Do(f func(T) bool) {
 
 	if f != nil && t.root != nil {
-		iterateFunc(T)(f).iterate(t.root)
+		iterateFunc[T](f).iterate(t.root)
 	}
 }
 
 // chanIterate should be used as a goroutine to produce all the values
 // in the tree.
-func (t *Tree(T)) chanIterate(ctx context.Context, c chan<- T) {
+func (t *Tree[T]) chanIterate(ctx context.Context, c chan<- T) {
 	t.Do(func(v T) bool {
 		select {
 		case c <- v:
@@ -266,21 +266,21 @@ func (t *Tree(T)) chanIterate(ctx context.Context, c chan<- T) {
 }
 
 // Iter returns a channel you can read through to fetch all the items.
-func (t *Tree(T)) Iter() <-chan T {
+func (t *Tree[T]) Iter() <-chan T {
 	c := make(chan T)
 	go t.chanIterate(context.Background(), c)
 	return c
 }
 
 // IterContext returns a channel you can read through to fetch all the items.
-func (t *Tree(T)) IterContext(ctx context.Context) <-chan T {
+func (t *Tree[T]) IterContext(ctx context.Context) <-chan T {
 	c := make(chan T)
 	go t.chanIterate(ctx, c)
 	return c
 }
 
 // Data returns all the elements as a slice.
-func (t *Tree(T)) Data() []T {
+func (t *Tree[T]) Data() []T {
 	arr := make([]T, t.Len())
 	var i int
 	i = 0

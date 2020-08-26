@@ -1,18 +1,18 @@
 package avltree
 
 // addData holds information used when adding nodes
-type addData(type T) struct {
+type addData[T any] struct {
 	lookingFor T        // Item to add
 	duplicate  *T       // Duplicate found, if any
-	tree       *Tree(T) // tree to add to
+	tree       *Tree[T] // tree to add to
 }
 
-func (d *addData(T)) add(node **treeNode(T), taller *bool) *T {
+func (d *addData[T]) add(node **treeNode[T], taller *bool) *T {
 	*taller = false // default: not taller
 	var ptr *T
 
 	if *node == nil {
-		*node = &treeNode(T){value: d.lookingFor}
+		*node = &treeNode[T]{value: d.lookingFor}
 		*taller = true
 		if *node != nil {
 			ptr = &(*node).value
@@ -74,8 +74,8 @@ func (d *addData(T)) add(node **treeNode(T), taller *bool) *T {
 // (or duplicate) item, and a flag indicating whether the item is the
 // duplicate that was found. A duplicate will never be returned if the
 // tree's AllowDuplicates flag is set.
-func (t *Tree(T)) Add(o T) (val *T, isDupe bool) {
-	d := &addData(T){o, nil, t}
+func (t *Tree[T]) Add(o T) (val *T, isDupe bool) {
+	d := &addData[T]{o, nil, t}
 	taller := false
 	isDupe = false
 	val = d.add(&t.root, &taller)
@@ -86,9 +86,9 @@ func (t *Tree(T)) Add(o T) (val *T, isDupe bool) {
 	return
 }
 
-func rightBalance(type T)(node *treeNode(T), taller bool) (*treeNode(T), bool) {
-	var x *treeNode(T) // right subtree of node
-	var w *treeNode(T) // left subtree of x
+func rightBalance[T any](node *treeNode[T], taller bool) (*treeNode[T], bool) {
+	var x *treeNode[T] // right subtree of node
+	var w *treeNode[T] // left subtree of x
 
 	x = node.right
 
@@ -122,9 +122,9 @@ func rightBalance(type T)(node *treeNode(T), taller bool) (*treeNode(T), bool) {
 	return node, taller
 }
 
-func leftBalance(type T)(node *treeNode(T), taller bool) (*treeNode(T), bool) {
-	var x *treeNode(T) // left subtree of node
-	var w *treeNode(T) // right subtree of x
+func leftBalance[T any](node *treeNode[T], taller bool) (*treeNode[T], bool) {
+	var x *treeNode[T] // left subtree of node
+	var w *treeNode[T] // right subtree of x
 
 	x = node.left
 
@@ -158,7 +158,7 @@ func leftBalance(type T)(node *treeNode(T), taller bool) (*treeNode(T), bool) {
 	return node, taller
 }
 
-func rotateLeft(type T)(node *treeNode(T)) *treeNode(T) {
+func rotateLeft[T any](node *treeNode[T]) *treeNode[T] {
 	if node != nil && node.right != nil {
 		ptr := node.right
 		node.size = node.leftSize() + ptr.leftSize()
@@ -170,7 +170,7 @@ func rotateLeft(type T)(node *treeNode(T)) *treeNode(T) {
 	return node
 }
 
-func rotateRight(type T)(node *treeNode(T)) *treeNode(T) {
+func rotateRight[T any](node *treeNode[T]) *treeNode[T] {
 	if node != nil && node.left != nil {
 		ptr := node.left
 		node.size = node.rightSize() + ptr.rightSize()

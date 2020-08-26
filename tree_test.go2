@@ -9,7 +9,7 @@ func TestTree(t *testing.T) {
 
 	// no duplicates tests
 
-	tree := NewOrdered(int)(0)
+	tree := NewOrdered[int](0)
 
 	if tree.root != nil {
 		t.Errorf("Initialized tree root should be nil: %v\n", tree.root)
@@ -64,7 +64,7 @@ func TestTree(t *testing.T) {
 
 	// reinitialize and allow duplicates
 
-	tree = NewOrdered(int)(AllowDuplicates)
+	tree = NewOrdered[int](AllowDuplicates)
 
 	if tree.root != nil {
 		t.Errorf("Reinitialized tree root should be nil: %v\n", tree.root)

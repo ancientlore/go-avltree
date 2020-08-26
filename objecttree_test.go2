@@ -15,7 +15,7 @@ func TestObjectTree(t *testing.T) {
 
 	// no duplicates tests
 
-	tree := New(MyObject)(func(a, b MyObject) int {
+	tree := New[MyObject](func(a, b MyObject) int {
 		if a.Key < b.Key {
 			return -1
 		}
@@ -79,7 +79,7 @@ func TestObjectTree(t *testing.T) {
 
 	// reinitialize and allow duplicates
 
-	tree = New(MyObject)(func(a, b MyObject) int {
+	tree = New[MyObject](func(a, b MyObject) int {
 		if a.Key < b.Key {
 			return -1
 		}

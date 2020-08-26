@@ -9,7 +9,7 @@ func TestBalanceFactorValues(t *testing.T) {
 }
 
 func TestNodeInit(t *testing.T) {
-    var nd treeNode(int64)
+    var nd treeNode[int64]
 
     if nd.bal != equal {
         t.Errorf("Balance should initialize to zero: %d", nd.bal)

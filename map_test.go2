@@ -9,7 +9,7 @@ import (
 )
 
 func TestMap(t *testing.T) {
-	m := NewMapOrdered(string, int)()
+	m := NewMapOrdered[string, int]()
 
 	if m.t.root != nil {
 		t.Errorf("Initialized map root should be nil: %v\n", m.t.root)
@@ -88,7 +88,7 @@ func TestPrintMap(t *testing.T) {
 		"Jennifer",
 	}
 	rand.Seed(time.Now().UnixNano())
-	m := NewMapOrdered(rune, string)()
+	m := NewMapOrdered[rune, string]()
 	for i := 0; i < 50; i++ {
 		m.Add('A'+rune(rand.Intn(26)), names[rand.Intn(len(names))])
 		m.Add('a'+rune(rand.Intn(26)), names[rand.Intn(len(names))])

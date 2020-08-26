@@ -10,7 +10,7 @@ import (
 
 func TestPrint(t *testing.T) {
 	rand.Seed(time.Now().UnixNano())
-	tree := NewOrdered(rune)(0)
+	tree := NewOrdered[rune](0)
 	for i := 0; i < 50; i++ {
 		tree.Add('A' + rune(rand.Intn(26)))
 		tree.Add('a' + rune(rand.Intn(26)))
