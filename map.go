@@ -89,7 +89,7 @@ func (m *Map[K, V]) Find(key K) *V {
 func (m *Map[K, V]) Do(f func(K, V) bool) {
 
 	if f != nil && m.t.root != nil {
-		iterateFunc(Pair[K, V])(func(e Pair[K, V]) bool {
+		iterateFunc[Pair[K, V]](func(e Pair[K, V]) bool {
 			return f(e.Key, e.Value)
 		}).iterate(m.t.root)
 	}

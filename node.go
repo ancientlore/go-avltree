@@ -12,15 +12,15 @@ type treeNode[T any] struct {
 	// Left and right nodes.
 	left, right *treeNode[T]
 
+	// The number of nodes in the left and right subtrees
+	// (excludes this node).
+	size int
+
 	// The contents of this node.
 	value T
 
 	// The balance factor of this node.
 	bal byte
-
-	// The number of nodes in the left and right subtrees
-	// (excludes this node).
-	size int
 }
 
 // leftSize returns the size of the left subtree
