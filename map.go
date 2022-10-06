@@ -1,13 +1,13 @@
 package avltree
 
 import (
-	"constraints"
 	"context"
+	"golang.org/x/exp/constraints"
 	"io"
 )
 
 type Pair[K, V any] struct {
-	Key K
+	Key   K
 	Value V
 }
 
@@ -17,20 +17,20 @@ type Map[K, V any] struct {
 
 // NewMap returns an initialized map.
 func NewMap[K, V any](c func(K, K) int) *Map[K, V] {
-    return &Map[K, V]{
+	return &Map[K, V]{
 		t: Tree[Pair[K, V]]{
-       		compare: func(v1, v2 Pair[K, V]) int {
+			compare: func(v1, v2 Pair[K, V]) int {
 				return c(v1.Key, v2.Key)
 			},
-		},	
-    }
+		},
+	}
 }
 
 // NewMapOrdered returns an initialized map using ordered types.
 func NewMapOrdered[K constraints.Ordered, V any]() *Map[K, V] {
-	 return &Map[K, V]{
+	return &Map[K, V]{
 		t: Tree[Pair[K, V]]{
-			compare: func (v1, v2 Pair[K, V]) int {
+			compare: func(v1, v2 Pair[K, V]) int {
 				switch {
 				case v1.Key < v2.Key:
 					return -1

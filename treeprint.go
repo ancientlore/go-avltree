@@ -18,7 +18,7 @@ type printData[T any] struct {
 // printer iterates through the tree to print it in graphical form.
 func (d *printData[T]) printer(node *treeNode[T]) {
 	d.iter(node.value)
-	fmt.Fprintf(d.w, "-%03d", node.size + 1)
+	fmt.Fprintf(d.w, "-%03d", node.size+1)
 	if node.bal == equal {
 		fmt.Fprintf(d.w, "⮕")
 	} else if node.bal == leftHigh {

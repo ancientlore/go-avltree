@@ -29,8 +29,8 @@ See also:	Robert L. Kruse, Data Structures and Program Design, 2nd Ed., Prentice
 package avltree
 
 import (
-	"constraints"
 	"context"
+	"golang.org/x/exp/constraints"
 	"math"
 )
 
@@ -59,16 +59,16 @@ type Tree[T any] struct {
 
 // New returns an initialized tree.
 func New[T any](c func(T, T) int, flags byte) *Tree[T] {
-	 return &Tree[T]{
-		 compare: c,
-		 treeFlags: flags,
-	 }
+	return &Tree[T]{
+		compare:   c,
+		treeFlags: flags,
+	}
 }
 
 // NewOrdered returns an initialized tree using ordered types.
 func NewOrdered[T constraints.Ordered](flags byte) *Tree[T] {
-	 return &Tree[T]{
-		compare: func (v1, v2 T) int {
+	return &Tree[T]{
+		compare: func(v1, v2 T) int {
 			switch {
 			case v1 < v2:
 				return -1
