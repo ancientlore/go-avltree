@@ -6,7 +6,9 @@ env:
 go:
   - 1.18.x
 
+before_install:
+  - go install github.com/mattn/goveralls@latest
+
 script:
   - go test -v -covermode=count -coverprofile=coverage.out
-  - go get github.com/mattn/goveralls
   - $(go env GOPATH)/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
