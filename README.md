@@ -1,7 +1,6 @@
-[![Build Status](https://api.travis-ci.com/ancientlore/go-avltree.svg?branch=v2)](https://app.travis-ci.com/ancientlore/go-avltree)
-[![Coverage Status](https://coveralls.io/repos/ancientlore/go-avltree/badge.svg?branch=v2)](https://coveralls.io/github/ancientlore/go-avltree?branch=v2)
-[![pkg.go.dev](https://pkg.go.dev/github.com/ancientlore/go-avltree/v2?status.png)](https://pkg.go.dev/github.com/ancientlore/go-avltree/v2)
-[gocover](http://gocover.io/github.com/ancientlore/go-avltree/v2)
+# go-avltree
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/ancientlore/go-avltree/v2.svg)](https://pkg.go.dev/github.com/ancientlore/go-avltree/v2)
 
 An [AVL tree](http://en.wikipedia.org/wiki/AVL_tree) (Adel'son-Vel'skii & Landis) is a binary search tree in which the heights of the left and right subtrees of the root differ by at most one and in which the left and right subtrees are again AVL trees.
 
