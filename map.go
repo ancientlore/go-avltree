@@ -1,8 +1,8 @@
 package avltree
 
 import (
+	"cmp"
 	"context"
-	"golang.org/x/exp/constraints"
 	"io"
 )
 
@@ -27,7 +27,7 @@ func NewMap[K, V any](c func(K, K) int) *Map[K, V] {
 }
 
 // NewMapOrdered returns an initialized map using ordered types.
-func NewMapOrdered[K constraints.Ordered, V any]() *Map[K, V] {
+func NewMapOrdered[K cmp.Ordered, V any]() *Map[K, V] {
 	return &Map[K, V]{
 		t: Tree[Pair[K, V]]{
 			compare: func(v1, v2 Pair[K, V]) int {
