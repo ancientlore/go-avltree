@@ -68,16 +68,7 @@ func New[T any](c func(T, T) int, flags byte) *Tree[T] {
 // NewOrdered returns an initialized tree using ordered types.
 func NewOrdered[T cmp.Ordered](flags byte) *Tree[T] {
 	return &Tree[T]{
-		compare: func(v1, v2 T) int {
-			switch {
-			case v1 < v2:
-				return -1
-			case v1 == v2:
-				return 0
-			default:
-				return 1
-			}
-		},
+		compare:   cmp.Compare[T],
 		treeFlags: flags,
 	}
 }

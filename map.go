@@ -31,14 +31,7 @@ func NewMapOrdered[K cmp.Ordered, V any]() *Map[K, V] {
 	return &Map[K, V]{
 		t: Tree[Pair[K, V]]{
 			compare: func(v1, v2 Pair[K, V]) int {
-				switch {
-				case v1.Key < v2.Key:
-					return -1
-				case v1.Key == v2.Key:
-					return 0
-				default:
-					return 1
-				}
+				return cmp.Compare(v1.Key, v2.Key)
 			},
 		},
 	}
